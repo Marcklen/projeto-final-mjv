@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "cliente")
 public class Cliente {
@@ -15,17 +17,30 @@ public class Cliente {
 	@Column(length = 100)
 	private String nome;
 
+	@Column(length = 11, unique = true)
+	private String cpf;
+
 	// usando o SET para nao ter pedidos repetidos, do contrario poderiamos usar um
 	// obj do tipo LIST
-	@OneToMany(mappedBy = "cliente" , fetch = FetchType.LAZY)
+	@JsonIgnore
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
 	private Set<Pedido> pedidos;
 
 	public Cliente() {
 	}
 
-	public Cliente(Integer id, String nome) {
+	public Cliente(Integer id, String nome, String cpf) {
 		this.id = id;
 		this.nome = nome;
+		this.cpf = cpf;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public Integer getId() {

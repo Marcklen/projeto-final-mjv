@@ -1,5 +1,11 @@
 package br.com.mjv.projeto.repositories;
 
-public interface ItemPedidoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import br.com.mjv.projeto.entities.ItemPedido;
+
+@Repository
+public interface ItemPedidoRepository extends JpaRepository<ItemPedido, Integer>{
 
 }

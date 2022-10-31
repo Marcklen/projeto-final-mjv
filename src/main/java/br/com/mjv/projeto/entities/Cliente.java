@@ -17,7 +17,7 @@ public class Cliente {
 
 	// usando o SET para nao ter pedidos repetidos, do contrario poderiamos usar um
 	// obj do tipo LIST
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "cliente" , fetch = FetchType.LAZY)
 	private Set<Pedido> pedidos;
 
 	public Cliente() {

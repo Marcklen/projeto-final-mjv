@@ -2,6 +2,7 @@ package br.com.mjv.projeto.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -28,6 +29,9 @@ public class Pedido {
 	private List<ItemPedido> itens;
 
 	public List<ItemPedido> getItens() {
+		if(this.itens == null) {
+			this.itens = new ArrayList<>();
+		}
 		return itens;
 	}
 

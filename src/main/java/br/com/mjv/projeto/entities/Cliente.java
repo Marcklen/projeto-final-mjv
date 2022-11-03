@@ -3,6 +3,9 @@ package br.com.mjv.projeto.entities;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -15,9 +18,12 @@ public class Cliente {
 	private Integer id;
 
 	@Column(length = 100)
+	@NotEmpty(message = "o campo NOME não pode ser VAZIO")
 	private String nome;
 
 	@Column(length = 11, unique = true)
+	@NotEmpty(message = "o campo CPF não pode ser VAZIO")
+	@CPF(message ="tem que ser informado um CPF válido")
 	private String cpf;
 
 	// usando o SET para nao ter pedidos repetidos, do contrario poderiamos usar um

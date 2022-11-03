@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -26,6 +25,7 @@ import br.com.mjv.projeto.entities.dtos.InformacaoItemPedidoDTO;
 import br.com.mjv.projeto.entities.dtos.InformacoesPedidoDTO;
 import br.com.mjv.projeto.entities.dtos.PedidoDTO;
 import br.com.mjv.projeto.entities.enums.StatusPedido;
+import br.com.mjv.projeto.exceptions.PedidoNaoEncontradoException;
 import br.com.mjv.projeto.services.PedidoService;
 
 @RestController
@@ -51,7 +51,7 @@ public class PedidoController {
 				.obterPedido(id)
 				.map(p -> converter(p))
 				.orElseThrow(() 
-						-> new ResponseStatusException(NOT_FOUND, "Pedido não encontrado!"));
+						-> new PedidoNaoEncontradoException());
 	}
 	
 	@PatchMapping("{id}")

@@ -2,6 +2,7 @@ package br.com.mjv.projeto.controllers;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -20,9 +21,11 @@ import java.util.stream.Collectors;
 
 import br.com.mjv.projeto.entities.ItemPedido;
 import br.com.mjv.projeto.entities.Pedido;
+import br.com.mjv.projeto.entities.dtos.AtualizarStatusPedidoDTO;
 import br.com.mjv.projeto.entities.dtos.InformacaoItemPedidoDTO;
 import br.com.mjv.projeto.entities.dtos.InformacoesPedidoDTO;
 import br.com.mjv.projeto.entities.dtos.PedidoDTO;
+import br.com.mjv.projeto.entities.enums.StatusPedido;
 import br.com.mjv.projeto.services.PedidoService;
 
 @RestController
@@ -50,6 +53,13 @@ public class PedidoController {
 				.orElseThrow(() 
 						-> new ResponseStatusException(NOT_FOUND, "Pedido não encontrado!"));
 	}
+	
+	@PatchMapping("{id}")
+	@ResponseStatus(NO_CONTENT)
+	public void atualizarStatus (@PathVariable Integer id, @RequestBody AtualizarStatusPedidoDTO dto) {
+		String novoStatus = dto.getNovoStatus();
+		pedidoService.atualizarStatus(id, StatusPedido.valueOf(novoStatus));
+	}
 
 	private InformacoesPedidoDTO converter(Pedido pedido) {
 		return InformacoesPedidoDTO
@@ -59,6 +69,7 @@ public class PedidoController {
 				.cpf(pedido.getCliente().getCpf()).total(pedido.getTotal())
 				.nomeCliente(pedido.getCliente().getNome())
 				.total(pedido.getTotal())
+				.status(pedido.getStatus().name()) //.name é para transformar o valor do ENUM em STRING
 				.itens(converterItens(pedido.getItens()))
 				.build();
 	}

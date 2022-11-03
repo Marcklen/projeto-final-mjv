@@ -14,6 +14,8 @@ import br.com.mjv.projeto.entities.Pedido;
 import br.com.mjv.projeto.entities.Produto;
 import br.com.mjv.projeto.entities.dtos.ItemPedidoDTO;
 import br.com.mjv.projeto.entities.dtos.PedidoDTO;
+import br.com.mjv.projeto.entities.enums.StatusPedido;
+import br.com.mjv.projeto.exceptions.PedidoNaoEncontradoException;
 import br.com.mjv.projeto.exceptions.RegraNegocioException;
 import br.com.mjv.projeto.repositories.ClienteRepository;
 import br.com.mjv.projeto.repositories.ItemPedidoRepository;
@@ -42,6 +44,7 @@ public class PedidoServiceImpl implements PedidoService {
 		pedido.setTotal(dto.getTotal());
 		pedido.setDataPedido(LocalDate.now());
 		pedido.setCliente(cliente);
+		pedido.setStatus(StatusPedido.PEDIDO_REALIZADO);
 
 		List<ItemPedido> itensPedido = converterItensPedido(pedido, dto.getItens());
 		pedidoRepository.save(pedido);
@@ -75,5 +78,17 @@ public class PedidoServiceImpl implements PedidoService {
 	public Optional<Pedido> obterPedido(Integer id) {
 		// TODO Auto-generated method stub
 		return pedidoRepository.findByIdFetchItens(id);
+	}
+
+	@Override
+	@Transactional
+	public void atualizarStatus(Integer id, StatusPedido status) {
+		// TODO Auto-generated method stub
+		pedidoRepository
+			.findById(id)
+			.map( p -> {
+				p.setStatus(status);
+				return pedidoRepository.save(p);
+			}).orElseThrow( ()-> new PedidoNaoEncontradoException());
 	}
 }

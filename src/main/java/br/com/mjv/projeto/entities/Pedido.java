@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import br.com.mjv.projeto.entities.enums.StatusPedido;
+
 @Entity
 @Table(name = "Pedido")
 public class Pedido {
@@ -24,7 +26,9 @@ public class Pedido {
 
 	@Column(precision = 20, scale = 2) // 10000.00
 	private BigDecimal total;
-	
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status")
 	private StatusPedido status;
 
 	@OneToMany(mappedBy = "pedido")

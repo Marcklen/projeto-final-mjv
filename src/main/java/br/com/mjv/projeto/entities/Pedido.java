@@ -24,6 +24,8 @@ public class Pedido {
 
 	@Column(precision = 20, scale = 2) // 10000.00
 	private BigDecimal total;
+	
+	private StatusPedido status;
 
 	@OneToMany(mappedBy = "pedido")
 	private List<ItemPedido> itens;
@@ -69,5 +71,13 @@ public class Pedido {
 
 	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+	
+	public StatusPedido getStatus() {
+		return status;
+	}
+	
+	public void setStatus(StatusPedido status) {
+		this.status = status;
 	}
 }

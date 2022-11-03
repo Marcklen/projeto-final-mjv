@@ -1,7 +1,5 @@
 package br.com.mjv.projeto.services.impl;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,5 +42,4 @@ public class UsuarioServiceImpl implements UserDetailsService{
 				.roles(roles)
 				.build();
 	}
-	
 }

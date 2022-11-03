@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.mjv.projeto.entities.Cliente;
 import br.com.mjv.projeto.exceptions.ClienteNaoEncontradoException;
 import br.com.mjv.projeto.repositories.ClienteRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/clientes")
+@Api(tags = "Controller de Clientes")
 public class ClienteController {
 
 	private ClienteRepository clienteRepository;
@@ -32,6 +35,7 @@ public class ClienteController {
 		this.clienteRepository = clienteRepository;
 	}
 
+	@ApiOperation("Buscar um Cliente por sua ID")
 	@GetMapping("{id}")
 	public Cliente getClienteById(@PathVariable Integer id) {
 		return clienteRepository
@@ -39,12 +43,14 @@ public class ClienteController {
 				.orElseThrow(() -> new ClienteNaoEncontradoException());
 	}
 
+	@ApiOperation("Criar um novo Cliente")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente save(@RequestBody @Valid Cliente cliente) {
 		return clienteRepository.save(cliente);
 	}
 
+	@ApiOperation("Deletar um Cliente por sua ID")
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Integer id) {
@@ -55,6 +61,7 @@ public class ClienteController {
 		
 	}
 
+	@ApiOperation("Atualizar um Cliente por sua ID")
 	@PutMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void update(@PathVariable Integer id, @RequestBody @Valid Cliente cliente) {
@@ -65,6 +72,7 @@ public class ClienteController {
 		}).orElseThrow(() -> new ClienteNaoEncontradoException());
 	}
 
+	@ApiOperation("Buscar todos os Clientes")
 	@GetMapping
 	public List<Cliente> findAll (Cliente filtro) {
 		ExampleMatcher matcher = ExampleMatcher

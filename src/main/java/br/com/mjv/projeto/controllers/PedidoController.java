@@ -27,9 +27,12 @@ import br.com.mjv.projeto.entities.dtos.PedidoDTO;
 import br.com.mjv.projeto.entities.enums.StatusPedido;
 import br.com.mjv.projeto.exceptions.PedidoNaoEncontradoException;
 import br.com.mjv.projeto.services.PedidoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/pedidos")
+@Api(tags = "Controller de Pedidos")
 public class PedidoController {
 
 	private PedidoService pedidoService;
@@ -38,6 +41,7 @@ public class PedidoController {
 		this.pedidoService = pedidoService;
 	}
 
+	@ApiOperation("Criar um novo Pedido")
 	@PostMapping
 	@ResponseStatus(CREATED)
 	public Integer salvarPedido(@RequestBody PedidoDTO dto) {
@@ -45,6 +49,7 @@ public class PedidoController {
 		return pedido.getId();
 	}
 
+	@ApiOperation("Buscar um Pedido por sua ID")
 	@GetMapping("{id}")
 	public InformacoesPedidoDTO getById(@PathVariable Integer id) {
 		return pedidoService
@@ -54,6 +59,7 @@ public class PedidoController {
 						-> new PedidoNaoEncontradoException());
 	}
 	
+	@ApiOperation("Atualizar um Pedido por sua ID")
 	@PatchMapping("{id}")
 	@ResponseStatus(NO_CONTENT)
 	public void atualizarStatus (@PathVariable Integer id, @RequestBody AtualizarStatusPedidoDTO dto) {

@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.mjv.projeto.entities.Produto;
 import br.com.mjv.projeto.exceptions.ProdutoNaoEncontradoException;
 import br.com.mjv.projeto.repositories.ProdutoRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/produtos")
+@Api(tags = "Controller de Produtos")
 public class ProdutoController {
 
 	private ProdutoRepository produtoRepository;
@@ -33,12 +36,14 @@ public class ProdutoController {
 		this.produtoRepository = produtoRepository;
 	}
 
+	@ApiOperation("Criar um novo Produto")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Produto save(@RequestBody @Valid Produto produto) {
 		return produtoRepository.save(produto);
 	}
 
+	@ApiOperation("Atualizar um Produto por sua ID")
 	@PutMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void update(@PathVariable Integer id, @RequestBody @Valid Produto produto) {
@@ -51,6 +56,7 @@ public class ProdutoController {
 		}).orElseThrow(() -> new ProdutoNaoEncontradoException());
 	}
 
+	@ApiOperation("Deletar um Produto por sua ID")
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Integer id) {
@@ -60,12 +66,13 @@ public class ProdutoController {
 		}).orElseThrow(() -> new ProdutoNaoEncontradoException());
 	}
 
+	@ApiOperation("Buscar um Produto por sua ID")	
 	@GetMapping("{id}")
 	public Produto getById(@PathVariable Integer id) {
 		return produtoRepository.findById(id)
 				.orElseThrow(() -> new ProdutoNaoEncontradoException());
 	}
-	
+	@ApiOperation("Buscar todos os Produtos")
 	@GetMapping
 	public List<Produto> findAll (Produto filtro) {
 		ExampleMatcher matcher = ExampleMatcher

@@ -12,16 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mjv.projeto.entities.Usuario;
 import br.com.mjv.projeto.services.impl.UsuarioServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@Api(tags = "Controller de Usuários")
 @RequiredArgsConstructor
 public class UsuarioController {
 
 	private final UsuarioServiceImpl usuarioService;
 	private final PasswordEncoder passwordEncoder;
 	
+	@ApiOperation("Cadastrar um Usuário para acessar os demais Controllers")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Usuario salvar(@RequestBody @Valid Usuario usuario) {
